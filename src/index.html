@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:;">
+  <title>BotDock</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <div>
+        <strong>BotDock</strong>
+        <small>Local bot manager</small>
+      </div>
+    </div>
+    <button class="button primary" id="addProject">Add project</button>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <div class="side-title">
+        <span>Projects</span>
+        <span id="projectCount">0</span>
+      </div>
+      <div class="project-list" id="projectList"></div>
+      <div class="empty-side" id="emptySide">Add a bot folder to start.</div>
+    </aside>
+
+    <section class="workspace">
+      <div class="welcome" id="welcome">
+        <div class="welcome-mark"><span></span><span></span><span></span></div>
+        <h1>Run your bots from one place.</h1>
+        <p>Add a Node.js or Python bot, then start it, stop it, read logs, and watch basic resource use.</p>
+        <button class="button primary" id="welcomeAdd">Choose a project folder</button>
+      </div>
+
+      <div class="project-view" id="projectView" hidden>
+        <div class="project-head">
+          <div>
+            <div class="status-line">
+              <span class="status-dot" id="statusDot"></span>
+              <span id="statusText">Stopped</span>
+            </div>
+            <h1 id="projectName">Project</h1>
+            <p id="projectPath"></p>
+          </div>
+          <div class="head-actions">
+            <button class="button ghost" id="openFolder">Open folder</button>
+            <button class="button danger-text" id="removeProject">Remove</button>
+          </div>
+        </div>
+
+        <div class="stats">
+          <article><span>CPU</span><strong id="cpuValue">0%</strong></article>
+          <article><span>Memory</span><strong id="memoryValue">0 MB</strong></article>
+          <article><span>Uptime</span><strong id="uptimeValue">0s</strong></article>
+          <article><span>PID</span><strong id="pidValue">-</strong></article>
+        </div>
+
+        <div class="controls">
+          <button class="button primary" id="startButton">Start</button>
+          <button class="button ghost" id="restartButton">Restart</button>
+          <button class="button ghost" id="stopButton">Stop</button>
+          <button class="button ghost" id="installButton">Install dependencies</button>
+        </div>
+
+        <div class="tabs" role="tablist">
+          <button class="tab active" data-tab="console">Console</button>
+          <button class="tab" data-tab="settings">Settings</button>
+          <button class="tab" data-tab="environment">.env</button>
+        </div>
+
+        <section class="panel active" data-panel="console">
+          <div class="console-head">
+            <span>Live output</span>
+            <div>
+              <button class="text-button" id="copyLogs">Copy</button>
+              <button class="text-button" id="clearLogs">Clear</button>
+            </div>
+          </div>
+          <pre class="console" id="consoleOutput"></pre>
+        </section>
+
+        <section class="panel" data-panel="settings">
+          <form class="settings-form" id="settingsForm">
+            <label>
+              <span>Name</span>
+              <input id="nameInput" autocomplete="off">
+            </label>
+            <label>
+              <span>Start command</span>
+              <input id="commandInput" autocomplete="off" placeholder="node index.js">
+              <small>Examples: npm start, node index.js, python bot.py</small>
+            </label>
+            <label>
+              <span>Install command</span>
+              <input id="installInput" autocomplete="off" placeholder="npm install">
+            </label>
+            <label class="check-row">
+              <input type="checkbox" id="autoRestartInput">
+              <span>Restart this project after a crash</span>
+            </label>
+            <button class="button primary" type="submit">Save settings</button>
+          </form>
+        </section>
+
+        <section class="panel" data-panel="environment">
+          <div class="env-note">This opens the local .env file for this project. BotDock does not send it anywhere.</div>
+          <textarea class="env-editor" id="envEditor" spellcheck="false" placeholder="TOKEN=...\nPORT=3000"></textarea>
+          <button class="button primary" id="saveEnv">Save .env</button>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="project-dialog" id="projectDialog">
+    <form method="dialog" id="projectDialogForm">
+      <header>
+        <div>
+          <strong>Add project</strong>
+          <small>BotDock found a start setup. You can change it.</small>
+        </div>
+        <button class="icon-button" value="cancel" aria-label="Close">x</button>
+      </header>
+      <label><span>Name</span><input id="dialogName"></label>
+      <label><span>Folder</span><input id="dialogPath" readonly></label>
+      <label><span>Start command</span><input id="dialogCommand" placeholder="npm start"></label>
+      <label><span>Install command</span><input id="dialogInstall" placeholder="npm install"></label>
+      <footer>
+        <button class="button ghost" value="cancel">Cancel</button>
+        <button class="button primary" value="default" id="dialogSave">Add project</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" hidden></div>
+  <script src="renderer.js"></script>
+</body>
+</html>
