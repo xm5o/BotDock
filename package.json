@@ -33,20 +33,27 @@
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         },
         {
           "target": "portable",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
-      ],
-      "artifactName": "BotDock-${version}-${arch}-${target}.${ext}"
+      ]
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
-      "createStartMenuShortcut": true
+      "createStartMenuShortcut": true,
+      "artifactName": "BotDock-Setup-${version}-${arch}.${ext}"
+    },
+    "portable": {
+      "artifactName": "BotDock-Portable-${version}-${arch}.${ext}"
     }
   }
 }
