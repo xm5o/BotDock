@@ -2,8 +2,6 @@ name: Build Windows release
 
 on:
   push:
-    branches:
-      - main
     tags:
       - "v*"
 
@@ -12,7 +10,6 @@ permissions:
 
 jobs:
   build-windows:
-    if: github.ref_type == 'tag' || contains(github.event.head_commit.message, '[release v0.1.0]')
     runs-on: windows-latest
 
     steps:
@@ -35,9 +32,6 @@ jobs:
       - name: Publish release
         uses: softprops/action-gh-release@v3
         with:
-          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || 'v0.1.0' }}
-          target_commitish: ${{ github.sha }}
-          name: v0.1.0
           generate_release_notes: true
           files: |
             dist/*.exe
